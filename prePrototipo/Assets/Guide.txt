@@ -1,0 +1,44 @@
+1º Posicionamiento cámara y cubo.
+Posicionar la cámara en 3ª persona como creamos que sea correcta.
+Y posicionar un cubo y un plano en el suelo. 
+
+
+2º Movimiento cubo y salto.
+Movimiento básico del cubo y controlar el salto cuando el personaje esté en contacto con el suelo.
+
+
+3º Giro personaje que vaya con la cámara. Y controlarlo.
+Giro del personaje que va acompañado por la cámara. Este debe de controlarse en plan cuando el personaje mira hacia el suelo tendrá unos límites o si mira hacia arriba  también estará limitado. 
+
+
+4º Voltereta.
+Voltereta que aumentará el desplazamiento de nuestro personaje al realizarla. Por el momento haremos que si se encuentra en ella el personaje será invulnerable.
+Para esto haremos que su material se vuelva algo transparente. 
+
+
+5º Disparo básico.
+Disparo realizado con partículas básicas. 
+Una vez realizado el disparo básico controlar la desaparición de las partículas: cuando impactan con una pared o cuando llevan bastante tiempo sin colisionar con nada.
+
+
+6º Interacción de disparos con enemigos.
+Al colisionar el disparo con los “enemigos” estos dirán un mensaje cada vez que han sido golpeados. También cambiarán de color cuando les haya golpeado el disparo.
+
+
+7º Gancho.
+En esta fase lanzarlo y que vuelva a el personaje, para distinguirlo le daremos un color destacado.
+1 - Lanzar gancho dándole una distancia máxima.
+2 - Tras llegar a esa distancia máxima el gancho vuelve al personaje.
+
+
+8º Atraer enemigos.
+Cuando el gancho colisione con el enemigo o con cualquier objeto este dejará de crecer.
+Al colisionar con un enemigo, este será atraído hacia el personaje.
+
+
+9º Ir hacia paredes.
+Cuando el gancho colisione con una pared nuestro personaje irá hacia esta.
+
+
+10º Disparos enemigos para testear voltereta.
+Los enemigos disparan de forma constante en una dirección. Testeamos así si el personaje recibe la colisión de esos disparos(mensaje diciendo si ha recibido el disparo) y cuando realicemos la voltereta que este no los reciba.
