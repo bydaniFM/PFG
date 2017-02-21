@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GanchoScriptTest7 : MonoBehaviour 
+public class Hook : MonoBehaviour 
 {
 	public GameObject player;
 	public float distance = 30f;
@@ -20,6 +20,7 @@ public class GanchoScriptTest7 : MonoBehaviour
 	bool inHook;
     bool hooked;    //Cuando el personaje está enganchado
     RigidbodyConstraints originalConstraints;
+    public LineRenderer line;
 
 
 	// Use this for initialization
@@ -31,7 +32,13 @@ public class GanchoScriptTest7 : MonoBehaviour
 		inHook = false;
         hooked = false;
 		rb = player.GetComponent<Rigidbody>();
-        originalConstraints = rb.constraints;
+        originalConstraints = rb.constraints;   //Debería ser con la rotación bloqueada en los tres ejes
+        line = GetComponent<LineRenderer>();
+        line.enabled = false;
+        //line.startWidth = 0.1f;
+        //line.endWidth = 0.1f;
+        //line.startColor = Color.black;
+        //line.endColor = Color.black;
     }
 
 	// Update is called once per frame
@@ -76,9 +83,8 @@ public class GanchoScriptTest7 : MonoBehaviour
 
         Debug.DrawRay(origin, destino);
 
-        if (Physics.Linecast(origin, destino, out hit))
-        {
-           return hit.collider.gameObject;
+        if (Physics.Linecast(origin, destino, out hit)) {
+            return hit.collider.gameObject;
         }
         return null;
     }
@@ -96,11 +102,16 @@ public class GanchoScriptTest7 : MonoBehaviour
             Vector3 velocidad = moveVector * speed * Time.deltaTime;
 
             rb.MovePosition(currentPosition + velocidad);
+
+            //Debug.DrawRay(currentPosition, finalPosition,Color.black);
+            line.SetPositions(new Vector3[] { transform.position, finalPosition });//{ player.transform.position, target.transform.position });
+            line.enabled = true;
             
             // Comprobar si ha llegado al destino
             Vector3 minDistance = new Vector3(1, 1, 1);
             if (Mathf.Abs((currentPosition - finalPosition).x) <= Mathf.Abs(minDistance.x) && Mathf.Abs((currentPosition - finalPosition).y) <= Mathf.Abs(minDistance.y) && Mathf.Abs((currentPosition - finalPosition).z) <= Mathf.Abs(minDistance.z)) {
                 hooked = true;
+                line.enabled = false;
             }
         }else {
             rb.constraints = RigidbodyConstraints.FreezeAll;
