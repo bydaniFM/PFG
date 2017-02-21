@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraControllerTest3 : MonoBehaviour 
+public class CameraController : MonoBehaviour 
 {
 	public GameObject target = null;
 	public float hSpeed = 10.0f;

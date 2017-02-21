@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class PlayerControllerTest4 : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     Transform tr;
     Vector3 moveDirection = Vector3.zero;
