@@ -17,8 +17,9 @@ public class Hook : MonoBehaviour
     Transform tr;
 	Vector3 offset = Vector3.zero;
 	Vector3 objective;
-	bool inHook;
+	bool inHook;    //En fase de lanzamiento
     bool hooked;    //Cuando el personaje está enganchado
+    bool hooking;   //El gancho está siendo lanzado;
     RigidbodyConstraints originalConstraints;
     public LineRenderer line;
 
@@ -53,7 +54,8 @@ public class Hook : MonoBehaviour
             {
                 if (target.tag.Contains("tag1"))
                 {
-                    move(player, target);
+                    StartCoroutine(throwHook(target));
+                    //move(player, target);
 					inHook = true;
                     Debug.Log("success");
                 }
@@ -67,7 +69,8 @@ public class Hook : MonoBehaviour
                 inHook = false;
                 hooked = false;
                 UnFreeze();
-            } else {
+            } else if (!hooking) {
+                //StopCoroutine(throwHook(target));
                 move(player, target);
             }
 
@@ -104,8 +107,8 @@ public class Hook : MonoBehaviour
             rb.MovePosition(currentPosition + velocidad);
 
             //Debug.DrawRay(currentPosition, finalPosition,Color.black);
-            line.SetPositions(new Vector3[] { transform.position, finalPosition });//{ player.transform.position, target.transform.position });
-            line.enabled = true;
+            //{ player.transform.position, target.transform.position });
+            //line.enabled = true;
             
             // Comprobar si ha llegado al destino
             Vector3 minDistance = new Vector3(1, 1, 1);
@@ -132,5 +135,22 @@ public class Hook : MonoBehaviour
         rb.constraints = originalConstraints;
     }
     
+    // El cálculo de la trayectoria de la cuerda no es correcto
+    IEnumerator throwHook(GameObject destiny) {
+        Vector3 finalPosition = destiny.transform.position;
+        hooking = true;
+        line.enabled = true;
+        Debug.Log("Lanzando gancho de " + transform.position + " a " + finalPosition);
+        //for (int i = 1; i < 5; i++) {
+        for(int i = 6; i > 0; i--) {            
+            line.SetPositions(new Vector3[] { transform.position, transform.position + finalPosition/i });  // --> No es correcto
+            //Debug.Log("throwing hook");
+            yield return new WaitForSeconds(.1f);
+        }
+        line.SetPositions(new Vector3[] { transform.position, finalPosition});
+
+        //Debug.Log("throwing hook");
+        hooking = false;
+    }
    
 }
