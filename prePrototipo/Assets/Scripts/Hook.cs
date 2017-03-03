@@ -65,11 +65,21 @@ public class Hook : MonoBehaviour
 
 		if (inHook) 
 		{
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                inHook = false;
-                hooked = false;
-                UnFreeze();
-            } else if (!hooking) {
+			if (Input.GetKeyDown (KeyCode.Space)) 
+			{
+				UnFreeze ();
+				inHook = false;
+				hooked = false;
+
+				rb.AddForce(new Vector3(0, 500, 0));
+			} 
+			else if (Input.GetKeyDown (KeyCode.LeftControl)) 
+			{
+				inHook = false;
+				hooked = false;
+				UnFreeze ();
+			}
+			else if (!hooking) {
                 //StopCoroutine(throwHook(target));
                 move(player, target);
             }

@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     public float rotationSpeed;
     public float umbralPrecision = 0.05f;
 
+	public int lives = 3; 
+
     float velocity;
     float distToGround;
 

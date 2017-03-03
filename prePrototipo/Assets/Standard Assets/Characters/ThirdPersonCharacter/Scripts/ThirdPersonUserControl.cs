@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
+using UnityEngine.UI;
 
 namespace UnityStandardAssets.Characters.ThirdPerson
 {
@@ -13,9 +14,14 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         private Vector3 m_Move;
         private bool m_Jump;                      // the world-relative desired move direction, calculated from the camForward and user input.
 
-        
+		public int lives = 3;
+		public Text text = null;
+		public GameObject respawn = null;
+
         private void Start()
         {
+			text.text = lives.ToString ();
+
             // get the transform of the main camera
             if (Camera.main != null)
             {
@@ -35,12 +41,28 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
         private void Update()
         {
+			text.text = lives.ToString ();
+
             if (!m_Jump)
             {
                 m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
             }
         }
 
+
+		void OnParticleCollision (GameObject go)
+		{
+			//go.gameObject.
+
+			if (lives < 0) 
+			{
+				m_Character.gameObject.SetActive (false);
+				//Degradado
+				m_Character.gameObject.SetActive (true);
+				lives = 3;
+				m_Character.gameObject.transform.position = respawn.transform.position;
+			}
+		}
 
         // Fixed update is called in sync with physics
         private void FixedUpdate()
