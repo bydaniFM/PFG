@@ -4,13 +4,14 @@ using System.Collections;
 public class Hook : MonoBehaviour 
 {
 	public GameObject player;
+    public Camera camera;
 	public float distance = 30f;
 	public float close = 0.1f;
 	public float speed = 20f;
 
     Rigidbody rb;
     Vector3 origin;
-    Vector3 destino;
+    Vector3 destiny;
     GameObject target; 
     RaycastHit hit;
 
@@ -27,7 +28,8 @@ public class Hook : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		tr = this.gameObject.transform;
+        //tr = this.gameObject.transform;
+        tr = camera.gameObject.transform;
 		offset = tr.position;
 		objective = offset;
 		inHook = false;
@@ -54,7 +56,7 @@ public class Hook : MonoBehaviour
             {
                 if (target.tag.Contains("tag1"))
                 {
-                    StartCoroutine(throwHook(target));
+                    StartCoroutine(throwHook(/*target*/));
                     //move(player, target);
 					inHook = true;
                     Debug.Log("success");
@@ -81,7 +83,7 @@ public class Hook : MonoBehaviour
 			}
 			else if (!hooking) {
                 //StopCoroutine(throwHook(target));
-                move(player, target);
+                move(player);
             }
 
 		}
@@ -91,24 +93,25 @@ public class Hook : MonoBehaviour
     GameObject checker()
     {
         origin = tr.position;
-        destino = tr.forward * distance;
-        Ray shootingRay = new Ray(origin, destino);
+        destiny = tr.forward * distance;
+        Ray shootingRay = new Ray(origin, destiny);
 
-        Debug.DrawRay(origin, destino);
+        Debug.DrawRay(origin, destiny);
 
-        if (Physics.Linecast(origin, destino, out hit)) {
+        if (Physics.Linecast(origin, destiny, out hit)) {
+            destiny = hit.point;
             return hit.collider.gameObject;
         }
         return null;
     }
 
-    void move (GameObject origin, GameObject destiny)
+    void move (GameObject origin)
     {
         if (!hooked) {
             Vector3 currentPosition = origin.transform.position;
-            Vector3 finalPosition = destiny.transform.position;
+            //Vector3 finalPosition = destiny.transform.position;
 
-            Vector3 moveVector = finalPosition - currentPosition;
+            Vector3 moveVector = destiny - currentPosition;
 
             moveVector.Normalize();
 
@@ -120,9 +123,9 @@ public class Hook : MonoBehaviour
             //{ player.transform.position, target.transform.position });
             //line.enabled = true;
             
-            // Comprobar si ha llegado al destino
+            // Comprobar si ha llegado al destiny
             Vector3 minDistance = new Vector3(1, 1, 1);
-            if (Mathf.Abs((currentPosition - finalPosition).x) <= Mathf.Abs(minDistance.x) && Mathf.Abs((currentPosition - finalPosition).y) <= Mathf.Abs(minDistance.y) && Mathf.Abs((currentPosition - finalPosition).z) <= Mathf.Abs(minDistance.z)) {
+            if (Mathf.Abs((currentPosition - destiny).x) <= Mathf.Abs(minDistance.x) && Mathf.Abs((currentPosition - destiny).y) <= Mathf.Abs(minDistance.y) && Mathf.Abs((currentPosition - destiny).z) <= Mathf.Abs(minDistance.z)) {
                 hooked = true;
                 line.enabled = false;
             }
@@ -146,18 +149,18 @@ public class Hook : MonoBehaviour
     }
     
     // El cálculo de la trayectoria de la cuerda no es correcto
-    IEnumerator throwHook(GameObject destiny) {
-        Vector3 finalPosition = destiny.transform.position;
+    IEnumerator throwHook() {
         hooking = true;
         line.enabled = true;
-        Debug.Log("Lanzando gancho de " + transform.position + " a " + finalPosition);
+        Vector3 origin = this.transform.position;
+        Debug.Log("Lanzando gancho de " + origin + " a " + destiny);
         //for (int i = 1; i < 5; i++) {
         for(int i = 6; i > 0; i--) {            
-            line.SetPositions(new Vector3[] { transform.position, transform.position + finalPosition/i });  // --> No es correcto
+            line.SetPositions(new Vector3[] { origin, /*origin +*/ destiny / i });  // --> No es correcto
             //Debug.Log("throwing hook");
             yield return new WaitForSeconds(.1f);
         }
-        line.SetPositions(new Vector3[] { transform.position, finalPosition});
+        line.SetPositions(new Vector3[] { origin, destiny });
 
         //Debug.Log("throwing hook");
         hooking = false;
