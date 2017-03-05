@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/CameraScene - Copy (2).unity
+- path: Assets/Scenes/PruebasGancho.unity
   isLoaded: 1
   isActive: 1
