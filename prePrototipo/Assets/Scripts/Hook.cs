@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Hook : MonoBehaviour 
 {
@@ -23,7 +24,9 @@ public class Hook : MonoBehaviour
     bool hooking;   //El gancho está siendo lanzado;
     RigidbodyConstraints originalConstraints;
     public LineRenderer line;
-
+	public GameObject pointer= null;
+	Image pointerImage = null;
+	HookPointers points = null;
 
 	// Use this for initialization
 	void Start () 
@@ -38,11 +41,33 @@ public class Hook : MonoBehaviour
         originalConstraints = rb.constraints;   //Debería ser con la rotación bloqueada en los tres ejes
         line = GetComponent<LineRenderer>();
         line.enabled = false;
+
+		pointerImage = pointer.GetComponent<Image> ();
+		points = pointer.GetComponent<HookPointers> ();
         //line.startWidth = 0.1f;
         //line.endWidth = 0.1f;
         //line.startColor = Color.black;
         //line.endColor = Color.black;
     }
+
+	void Update()
+	{
+		if (!inHook) 
+		{
+			target = checker ();
+
+			if (target == null)
+				pointerImage.sprite = points.normal;
+			else {
+				if (target.tag.Contains ("tag1"))
+					pointerImage.sprite = points.toHang;
+				else if (target.name == "Terrain") // Arreglo rápido, cuando todos los objetos tengan los tags que deberian tener borramos estoy y lo hacemos bien
+					pointerImage.sprite = points.normal;
+				else
+					pointerImage.sprite = points.notToHang;
+			}
+		}
+	}
 
 	// Update is called once per frame
 	void FixedUpdate () 
