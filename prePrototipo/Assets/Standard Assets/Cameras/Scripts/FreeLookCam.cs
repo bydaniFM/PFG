@@ -28,6 +28,15 @@ namespace UnityStandardAssets.Cameras
 		private Quaternion m_PivotTargetRot;
 		private Quaternion m_TransformTargetRot;
 
+        //new code for the zoom
+        //Zoom
+        public float fieldOfView = 70.0f;
+        public float zoomFieldOfView = 30.0f;
+        public float zoomSpeed = 3.0f;
+
+        public Camera mainCamera;
+        public Camera UICamera;
+
         protected override void Awake()
         {
             base.Awake();
@@ -49,6 +58,9 @@ namespace UnityStandardAssets.Cameras
                 Cursor.lockState = m_LockCursor ? CursorLockMode.Locked : CursorLockMode.None;
                 Cursor.visible = !m_LockCursor;
             }
+
+            //Zoom
+            Zoom(Input.GetKey("f"));
         }
 
 
@@ -64,6 +76,33 @@ namespace UnityStandardAssets.Cameras
             if (m_Target == null) return;
             // Move the rig towards target position.
             transform.position = Vector3.Lerp(transform.position, m_Target.position, deltaTime*m_MoveSpeed);
+        }
+
+        void Zoom(bool isZooming)
+        {
+            if (!mainCamera)
+                return;
+
+            if (isZooming)
+            {
+                float newFieldOfView = Mathf.Lerp(mainCamera.fieldOfView, zoomFieldOfView, Time.deltaTime * zoomSpeed);
+                mainCamera.fieldOfView = newFieldOfView;
+
+                if (UICamera != null)
+                {
+                    UICamera.fieldOfView = newFieldOfView;
+                }
+            }
+            else
+            {
+                float originalFieldOfView = Mathf.Lerp(mainCamera.fieldOfView, fieldOfView, Time.deltaTime * zoomSpeed);
+                mainCamera.fieldOfView = originalFieldOfView;
+
+                if (UICamera != null)
+                {
+                    UICamera.fieldOfView = originalFieldOfView;
+                }
+            }
         }
 
 

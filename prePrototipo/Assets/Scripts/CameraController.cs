@@ -17,11 +17,22 @@ public class CameraController : MonoBehaviour
 
 	Transform tr;
 	Vector3 positionTarget;
-	//Vector3 offsetX;
-	//Vector3 offsetY;
+    //Vector3 offsetX;
+    //Vector3 offsetY;
 
-	// Use this for initialization
-	void Start () 
+    //new code for the zoom
+    //Zoom
+
+    public bool zoomTrue;
+    public float fieldOfView = 70.0f;
+    public float zoomFieldOfView = 30.0f;
+    public float zoomSpeed = 3.0f;
+
+    public Camera mainCamera;
+
+
+    // Use this for initialization
+    void Start () 
 	{
 		tr = this.gameObject.transform;
 		positionTarget = new Vector3 ( 0 , distanceHeight, (-distanceHorizontal));
@@ -56,4 +67,26 @@ public class CameraController : MonoBehaviour
 
 		tr.LookAt(target.transform.position);
 	}
+
+    void Zoom(bool isZooming)
+    {
+        isZooming = zoomTrue;
+
+        if (!mainCamera)
+            return;
+
+        if (isZooming)
+        {
+            float newFieldOfView = Mathf.Lerp(mainCamera.fieldOfView, zoomFieldOfView, Time.deltaTime *  zoomSpeed);
+            mainCamera.fieldOfView = newFieldOfView;
+
+        }
+        else
+        {
+            float originalFieldOfView = Mathf.Lerp(mainCamera.fieldOfView,  fieldOfView, Time.deltaTime *  zoomSpeed);
+            mainCamera.fieldOfView = originalFieldOfView;
+
+
+        }
+    }
 }

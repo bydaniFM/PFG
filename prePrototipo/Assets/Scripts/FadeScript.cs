@@ -9,7 +9,6 @@ public class FadeScript : MonoBehaviour
     public float fadeSpeed = 1.5f;
     public bool sceneStarting = true;
 
-
     void Awake()
     {
         FadeImg.rectTransform.localScale = new Vector2(Screen.width, Screen.height);
@@ -17,25 +16,27 @@ public class FadeScript : MonoBehaviour
 
     void Update()
     {
-
+        //if the scene is starting, we call the StartScene,
+        //which contains a FadeToClear to show the scene
         if (sceneStarting)
             StartScene();
     }
 
-
-    void FadeToClear()
-    {
-        // Lerp the colour of the image between itself and transparent.
-        FadeImg.color = Color.Lerp(FadeImg.color, Color.clear, fadeSpeed * Time.deltaTime);
-    }
-
-
+    /// <summary>
+    /// Lerp the colour of the image between itself and black.
+    /// </summary>
     void FadeToBlack()
     {
-        // Lerp the colour of the image between itself and black.
         FadeImg.color = Color.Lerp(FadeImg.color, Color.black, fadeSpeed * Time.deltaTime);
     }
 
+    /// <summary>
+    /// Lerp the colour of the image between itself and transparent.
+    /// </summary>
+    void FadeToClear()
+    {
+        FadeImg.color = Color.Lerp(FadeImg.color, Color.clear, fadeSpeed * Time.deltaTime);
+    }
 
     void StartScene()
     {
@@ -53,6 +54,11 @@ public class FadeScript : MonoBehaviour
         }
     }
 
+    public void EndScene(int SceneNumber)
+    {
+        sceneStarting = false;
+        StartCoroutine("EndSceneRoutine", SceneNumber);
+    }
 
     public IEnumerator EndSceneRoutine(int SceneNumber)
     {
@@ -73,12 +79,7 @@ public class FadeScript : MonoBehaviour
             {
                 yield return null;
             }
-        } while (true);
-    }
 
-    public void EndScene(int SceneNumber)
-    {
-        sceneStarting = false;
-        StartCoroutine("EndSceneRoutine", SceneNumber);
+        } while (true);
     }
 }
