@@ -175,20 +175,34 @@ public class Hook : MonoBehaviour
     
     // El cálculo de la trayectoria de la cuerda no es correcto
     IEnumerator throwHook() {
+        Debug.Log("Travelling to: " + destiny);
         hooking = true;
-        line.enabled = true;
-        Vector3 origin = this.transform.position;
-        Debug.Log("Lanzando gancho de " + origin + " a " + destiny);
-        //for (int i = 1; i < 5; i++) {
-        for(int i = 6; i > 0; i--) {            
-            line.SetPositions(new Vector3[] { origin, /*origin +*/ destiny / i });  // --> No es correcto
-            //Debug.Log("throwing hook");
-            yield return new WaitForSeconds(.1f);
-        }
-        line.SetPositions(new Vector3[] { origin, destiny });
+        GameObject Rope = (GameObject)Instantiate(Resources.Load("RopeCreator"));
+        Rope.transform.position = this.transform.position;
+        Rope.transform.parent = this.transform;
+        //yield return new WaitForSeconds(0.01f);
+        yield return new WaitForEndOfFrame();
+        Rope.GetComponent<RopePhysics>().prevSegment.GetComponent<LastRopeSegmentController>().destiny = destiny;
+        yield return new WaitForSeconds(2f);
+        Destroy(Rope);
 
-        //Debug.Log("throwing hook");
+
+
+        //hooking = true;
+        //line.enabled = true;
+        //Vector3 origin = this.transform.position;
+        //Debug.Log("Lanzando gancho de " + origin + " a " + destiny);
+        ////for (int i = 1; i < 5; i++) {
+        //for(int i = 6; i > 0; i--) {            
+        //    line.SetPositions(new Vector3[] { origin, /*origin +*/ destiny / i });  // --> No es correcto
+        //    //Debug.Log("throwing hook");
+        //    yield return new WaitForSeconds(1f);
+        //}
+        //line.SetPositions(new Vector3[] { origin, destiny });
+
+        ////Debug.Log("throwing hook");
         hooking = false;
+        
     }
    
 }
