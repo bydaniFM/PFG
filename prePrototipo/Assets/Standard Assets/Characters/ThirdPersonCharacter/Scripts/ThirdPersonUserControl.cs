@@ -53,7 +53,9 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		void OnParticleCollision (GameObject go)
 		{
 			//go.gameObject.
+			DamageData aux = go.gameObject.GetComponent<DamageData>();
 
+			lives -= aux.damage;
 			if (lives < 0) 
 			{
 				m_Character.gameObject.SetActive (false);

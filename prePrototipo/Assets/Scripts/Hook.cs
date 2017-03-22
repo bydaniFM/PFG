@@ -28,6 +28,11 @@ public class Hook : MonoBehaviour
 	Image pointerImage = null;
 	HookPointers points = null;
 
+	public float secondsCooldown = 2.0f;
+	bool IsCooldown = false;
+
+	public float waitingAfterHook = 0.5f;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -72,47 +77,57 @@ public class Hook : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate () 
 	{
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            //f apretada
-            target = checker(); 
-            if (target != null)
-            {
-                if (target.tag.Contains("tag1"))
-                {
-                    StartCoroutine(throwHook(/*target*/));
-                    //move(player, target);
-					inHook = true;
-                    Debug.Log("success");
-                }
-                else Debug.Log("null");
-            }  
-        }
-
-		if (inHook) 
-		{
-			if (Input.GetKeyDown (KeyCode.Space)) 
-			{
-				UnFreeze ();
-				inHook = false;
-				hooked = false;
-
-				rb.AddForce(new Vector3(0, 500, 0));
-			} 
-			else if (Input.GetKeyDown (KeyCode.LeftControl)) 
-			{
-				inHook = false;
-				hooked = false;
-				UnFreeze ();
+		if (!IsCooldown) {
+			if (Input.GetKeyDown (KeyCode.F)) {
+				//f apretada
+				target = checker (); 
+				if (target != null) {
+					if (target.tag.Contains ("tag1")) {
+						StartCoroutine (throwHook (/*target*/));
+						//move(player, target);
+						inHook = true;
+						IsCooldown = true;
+						Debug.Log ("success");
+					} else if (target.tag.Contains ("Enemy")) {
+						EnemyController ec = target.gameObject.GetComponent<EnemyController> ();
+						ec.getHit (1);
+						IsCooldown = true;
+						StartCoroutine (cooldown ());
+					} else {
+						StartCoroutine (throwHook ());
+						Debug.Log ("null");
+						IsCooldown = true;
+						StartCoroutine (cooldown ());
+					}
+				}  
 			}
-			else if (!hooking) {
-                //StopCoroutine(throwHook(target));
-                move(player);
-            }
-
 		}
-			
+			if (inHook) 
+			{
+				if (Input.GetKeyDown (KeyCode.Space)) 
+				{
+					UnFreeze ();
+					inHook = false;
+					hooked = false;
+
+					rb.AddForce (new Vector3 (0, 500, 0));
+					StartCoroutine (cooldown ());
+				} 
+				else if (Input.GetKeyDown (KeyCode.LeftControl)) 
+				{
+					inHook = false;
+					hooked = false;
+					UnFreeze ();
+
+					StartCoroutine (cooldown ());
+				}
+				else if (!hooking) 
+				{
+					//StopCoroutine(throwHook(target));
+					move (player);
+				}
+
+			}
 	}
 
     GameObject checker()
@@ -183,7 +198,7 @@ public class Hook : MonoBehaviour
         //yield return new WaitForSeconds(0.01f);
         yield return new WaitForEndOfFrame();
         Rope.GetComponent<RopePhysics>().prevSegment.GetComponent<LastRopeSegmentController>().destiny = destiny;
-        yield return new WaitForSeconds(2f);
+		yield return new WaitForSeconds(waitingAfterHook);
         Destroy(Rope);
 
 
@@ -204,5 +219,10 @@ public class Hook : MonoBehaviour
         hooking = false;
         
     }
-   
+   	
+	IEnumerator cooldown ()
+	{
+		yield return new WaitForSeconds(secondsCooldown);
+		IsCooldown = false;
+	}
 }
