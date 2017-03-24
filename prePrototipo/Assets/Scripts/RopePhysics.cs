@@ -5,9 +5,10 @@ using UnityEngine;
 public class RopePhysics : MonoBehaviour {
 
     public GameObject prevSegment;
+    public GameObject hook;
 
     CapsuleCollider trigger;
-    int numSegments;
+    public int numSegments;
     int speed;
 
 	// Use this for initialization
@@ -20,14 +21,16 @@ public class RopePhysics : MonoBehaviour {
         //GameObject FirstSegment = (GameObject)Instantiate(Resources.Load("RopeSegment"));
         //FirstSegment.transform.position = this.transform.position;
 
+        hook = GameObject.Find("Hook");
+
         prevSegment = null;
         trigger = null;
-        numSegments = 30;
+        numSegments = (int)hook.GetComponent<Hook>().distance * 4;
         speed = 5;
 
         Vector3 initialPos = this.transform.position;
         if (Resources.Load("RopeSegment") != null) {
-            //Debug.Log("Prefab encontrado");
+            Debug.Log("Creating rope with " + numSegments + " segments");
             for (int i = 0; i < numSegments; i++) {
                 GameObject RopeSegment = (GameObject)Instantiate(Resources.Load("RopeSegment"));
                 RopeSegment.transform.parent = this.transform;

@@ -6,9 +6,10 @@ public class Hook : MonoBehaviour
 {
 	public GameObject player;
     public Camera camera;
-	public float distance = 30f;
+	public float maxDistance = 30f;
 	public float close = 0.1f;
 	public float speed = 20f;
+    public float distance = 0;
 
     Rigidbody rb;
     Vector3 origin;
@@ -133,7 +134,7 @@ public class Hook : MonoBehaviour
     GameObject checker()
     {
         origin = tr.position;
-        destiny = tr.forward * distance;
+        destiny = tr.forward * maxDistance;
         Ray shootingRay = new Ray(origin, destiny);
 
         Debug.DrawRay(origin, destiny);
@@ -190,12 +191,15 @@ public class Hook : MonoBehaviour
     
     // El cálculo de la trayectoria de la cuerda no es correcto
     IEnumerator throwHook() {
-        Debug.Log("Travelling to: " + destiny);
+        distance = Vector3.Distance(origin, destiny);
+        Debug.Log("Distance: " + distance);
+        //Debug.Log("Travelling to: " + destiny);
         hooking = true;
+        //RopeCreator ropeCreator = new RopeCreator((int)distance * 4);
         GameObject Rope = (GameObject)Instantiate(Resources.Load("RopeCreator"));
+        //Rope.GetComponent<RopePhysics>().numSegments = (int)distance * 4;
         Rope.transform.position = this.transform.position;
         Rope.transform.parent = this.transform;
-        //yield return new WaitForSeconds(0.01f);
         yield return new WaitForEndOfFrame();
         Rope.GetComponent<RopePhysics>().prevSegment.GetComponent<LastRopeSegmentController>().destiny = destiny;
 		yield return new WaitForSeconds(waitingAfterHook);

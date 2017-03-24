@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Scripts\EnemyController.cs" />
     <Compile Include="Assets\Scripts\FadeScript.cs" />
     <Compile Include="Assets\Scripts\Hook.cs" />
     <Compile Include="Assets\Scripts\HookPointers.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Assets\Scripts\ParticleController.cs" />
     <Compile Include="Assets\Scripts\PlayerBehaviour.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\RopeCreator.cs" />
     <Compile Include="Assets\Scripts\RopePhysics.cs" />
     <Compile Include="Assets\Scripts\SightPointController.cs" />
   </ItemGroup>

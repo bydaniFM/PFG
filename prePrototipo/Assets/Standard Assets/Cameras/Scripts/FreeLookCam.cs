@@ -60,7 +60,7 @@ namespace UnityStandardAssets.Cameras
             }
 
             //Zoom
-            Zoom(Input.GetKey("f"));
+            //Zoom(Input.GetKey("f"));
         }
 
 
