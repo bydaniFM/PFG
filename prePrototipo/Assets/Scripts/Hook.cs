@@ -89,11 +89,11 @@ public class Hook : MonoBehaviour
 						inHook = true;
 						IsCooldown = true;
 						Debug.Log ("success");
-					} else if (target.tag.Contains ("Enemy")) {
+					/*} else if (target.tag.Contains ("Enemy")) {
 						EnemyController ec = target.gameObject.GetComponent<EnemyController> ();
 						ec.getHit (1);
 						IsCooldown = true;
-						StartCoroutine (cooldown ());
+						StartCoroutine (cooldown ());*/
 					} else {
 						StartCoroutine (throwHook ());
 						Debug.Log ("null");
