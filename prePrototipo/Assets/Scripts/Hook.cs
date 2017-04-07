@@ -58,8 +58,7 @@ public class Hook : MonoBehaviour
 
 	void Update()
 	{
-		if (!inHook) 
-		{
+		if (!inHook) {
 			target = checker ();
 
 			if (target == null)
@@ -72,34 +71,44 @@ public class Hook : MonoBehaviour
 				else
 					pointerImage.sprite = points.notToHang;
 			}
-		}
-	}
+		} else if (hooked) {
+            if (target.tag.Contains("HookableTerrain")) {
+                hooked = false;
+                inHook = false;
+                UnFreeze();
+                StartCoroutine(cooldown());
+            }
+        }
+    }
 
 	// Update is called once per frame
 	void FixedUpdate () 
 	{
 		if (!IsCooldown) {
-			if (Input.GetKeyDown (KeyCode.F)) {
+			if (Input.GetKeyDown(KeyCode.F)) {
 				//f apretada
 				target = checker (); 
 				if (target != null) {
-					if (target.tag.Contains ("tag1")) {
-						StartCoroutine (throwHook (/*target*/));
-						//move(player, target);
-						inHook = true;
-						IsCooldown = true;
-						Debug.Log ("success");
-					/*} else if (target.tag.Contains ("Enemy")) {
-						EnemyController ec = target.gameObject.GetComponent<EnemyController> ();
-						ec.getHit (1);
-						IsCooldown = true;
-						StartCoroutine (cooldown ());*/
-					} else {
-						StartCoroutine (throwHook ());
-						Debug.Log ("null");
-						IsCooldown = true;
-						StartCoroutine (cooldown ());
-					}
+                    if (target.tag.Contains("tag1") || target.tag.Contains("HookableTerrain")) {
+                        StartCoroutine(throwHook());
+                        //move(player, target);
+                        inHook = true;
+                        IsCooldown = true;
+                        Debug.Log("success");
+                        /*if (target.tag.Contains("HookableTerrain")) {
+                            hooked = false;
+                        }*/
+                        /*} else if (target.tag.Contains ("Enemy")) {
+                            EnemyController ec = target.gameObject.GetComponent<EnemyController> ();
+                            ec.getHit (1);
+                            IsCooldown = true;
+                            StartCoroutine (cooldown ());*/
+                    } else {
+                        StartCoroutine(throwHook());
+                        Debug.Log("null");
+                        IsCooldown = true;
+                        StartCoroutine(cooldown());
+                    }
 				}  
 			}
 		}
@@ -170,7 +179,7 @@ public class Hook : MonoBehaviour
                 hooked = true;
                 line.enabled = false;
             }
-        }else {
+        } else {
             rb.constraints = RigidbodyConstraints.FreezeAll;
             //rb.freezeRotation = true;
         }
