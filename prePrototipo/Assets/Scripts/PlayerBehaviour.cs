@@ -14,8 +14,8 @@ public class PlayerBehaviour : MonoBehaviour {
     public Image[] lifePoints;
     public Image[] staminaPoints;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
         f_secondsCountLife = 20f;
         f_secondsCountStamina = 6f;
@@ -33,7 +33,8 @@ public class PlayerBehaviour : MonoBehaviour {
         LifeSecondsCount();
         StaminaSecondsCount();
 
-        UpdateStamina(totalStamina);
+        UpdateLifePoints();
+        UpdateStamina();
     }
 
     /// <summary>
@@ -45,23 +46,25 @@ public class PlayerBehaviour : MonoBehaviour {
     {
         f_secondsCountLife -= Time.deltaTime;
 
-        if (f_secondsCountLife < 0 && totalLife < 4)
+        if (f_secondsCountLife < 0 && totalLife < 3)
         {
             totalLife++;
             f_secondsCountLife = 20f;
         }
         
+
     }
 
     void StaminaSecondsCount()
     {
         f_secondsCountStamina -= Time.deltaTime;
 
-        if (f_secondsCountStamina < 0 && totalStamina < 6)
+        if (f_secondsCountStamina < 0 && totalStamina < 3)
         {
-            totalLife++;
+            totalStamina++;
             f_secondsCountStamina = 6f;
         }
+        
 
     }
 
@@ -70,12 +73,14 @@ public class PlayerBehaviour : MonoBehaviour {
     /// on the total stamina the character has.
     /// </summary>
     /// <param name="totalStamina"></param>
-    void UpdateLifePoints(int totalLife)
+    void UpdateLifePoints()
     {
-        for (int i = totalLife; i <= 0; i--)
+        for (int i = lifePoints.GetLength(0); i <= 0; i--)
         {
-            if(i!= totalLife)
-                lifePoints[i].enabled = false;
+            if(i< totalLife)
+                lifePoints[i].gameObject.GetComponent<Image>().enabled = false;
+            else
+                lifePoints[i].gameObject.GetComponent<Image>().enabled = true;
         }
     }
 
@@ -85,12 +90,15 @@ public class PlayerBehaviour : MonoBehaviour {
     /// on the total stamina the character has.
     /// </summary>
     /// <param name="totalStamina"></param>
-    void UpdateStamina(int totalStamina)
+    void UpdateStamina()
     {
-        for (int i = totalStamina; i <= 0; i--)
+        
+        for (int i = staminaPoints.GetLength(0); i <= 0; i--)
         {
-            if (i != totalStamina)
-                staminaPoints[i].enabled = false;
+            if (i < totalStamina)
+                staminaPoints[i].gameObject.GetComponent<Image>().enabled = false;
+            else
+                staminaPoints[i].gameObject.GetComponent<Image>().enabled = true;
         }
     }
 
