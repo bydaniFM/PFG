@@ -52,6 +52,9 @@
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.Advertisements">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Advertisements.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
@@ -67,6 +70,9 @@
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.Purchasing">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Purchasing.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.VR">
       <HintPath>Library\UnityAssemblies\UnityEngine.VR.dll</HintPath>
     </Reference>
@@ -81,20 +87,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\BulletController.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Scripts\Character\BulletController.cs" />
+    <Compile Include="Assets\Scripts\Character\Hook.cs" />
+    <Compile Include="Assets\Scripts\Character\HookPointers.cs" />
+    <Compile Include="Assets\Scripts\Character\LastRopeSegmentController.cs" />
+    <Compile Include="Assets\Scripts\Character\MeleeWeaponController.cs" />
+    <Compile Include="Assets\Scripts\Character\PlayerBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Character\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Character\RopeCreator.cs" />
+    <Compile Include="Assets\Scripts\Character\RopePhysics.cs" />
+    <Compile Include="Assets\Scripts\Character\ShootController.cs" />
+    <Compile Include="Assets\Scripts\Character\SightPointController.cs" />
+    <Compile Include="Assets\Scripts\DummyController.cs" />
     <Compile Include="Assets\Scripts\EnemyController.cs" />
     <Compile Include="Assets\Scripts\FadeScript.cs" />
-    <Compile Include="Assets\Scripts\Hook.cs" />
-    <Compile Include="Assets\Scripts\HookPointers.cs" />
-    <Compile Include="Assets\Scripts\LastRopeSegmentController.cs" />
     <Compile Include="Assets\Scripts\ParticleController.cs" />
-    <Compile Include="Assets\Scripts\PlayerBehaviour.cs" />
-    <Compile Include="Assets\Scripts\PlayerController.cs" />
-    <Compile Include="Assets\Scripts\RopeCreator.cs" />
-    <Compile Include="Assets\Scripts\RopePhysics.cs" />
-    <Compile Include="Assets\Scripts\ShootController.cs" />
-    <Compile Include="Assets\Scripts\SightPointController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Guide.txt" />
